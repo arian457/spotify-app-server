@@ -2,10 +2,10 @@ const axios = require("axios");
 const setAxiosDefaults = require("../config/axios");
 const { Request } = require("../db");
 
-setAxiosDefaults()
 
 const getArtistsByName = async (req, res) => {
   const { artist_name } = req.body;
+  setAxiosDefaults(req.token)
   try {
     const { items } = await axios.get(
       `/search?q=artist%3A${encodeURI(artist_name)}&type=artist&limit=5`
@@ -19,6 +19,7 @@ const getArtistsByName = async (req, res) => {
 const getAlbumsOfAnArtist = async (req, res) => {
   const { id } = req.params;
   const { UserId, ip_address } = req.body;
+  setAxiosDefaults(req.token)
   try {
     const { name } = await axios.get(`/artists/${id}`).then((res) => res.data);
     const { items } = await axios.get(`/artists/${id}/albums`).then((res) => res.data);
