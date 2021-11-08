@@ -36,6 +36,8 @@ sequelize.models = Object.fromEntries(capsEntries);
 const { Request, User } = sequelize.models;
 
 Request.belongsTo(User)
+User.hasMany(Request)
+
 module.exports = {
   ...sequelize.models,
   conn: sequelize,

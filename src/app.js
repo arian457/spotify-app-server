@@ -29,7 +29,7 @@ server.use((req, res, next) => {
   next();
 });
 
-server.use("/", routes);
+server.use("/api/v1", routes);
 
 // Error catching endware.
 server.use((err, req, res, next) => {
