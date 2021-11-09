@@ -4,12 +4,14 @@ const { Request } = require("../db");
 const formatAlbumInfo = require("../utils/albumFormatter");
 
 const getArtistsByName = async (req, res) => {
-  const { artist_name } = req.body;
+  const { artist_name } = req.query;
+  console.log(artist_name)
   setAxiosDefaults(req.token);
   try {
     const { items } = await axios
       .get(`/search?q=artist%3A${encodeURI(artist_name)}&type=artist&limit=5`)
       .then((res) => res.data.artists);
+     
     res.json(items);
   } catch (e) {
     console.log(e);
@@ -19,7 +21,7 @@ const getArtistsByName = async (req, res) => {
 
 const getAlbumsOfAnArtist = async (req, res) => {
   const { id } = req.params;
-  const { UserId, ip_address } = req.body;
+  const { UserId, ip_address } = req.query;
 
   setAxiosDefaults(req.token);
   try {
@@ -27,15 +29,13 @@ const getAlbumsOfAnArtist = async (req, res) => {
       .get(`/artists/${id}/albums`)
       .then(async (res) => {
         const { items } = res.data;
-        const artist_name = items[0].artists[0].name;
+        const artist_name = items[0]?.artists[0]?.name;
         Request.create({
           ip_address,
           artist_name,
           UserId,
-        });
-        const list = [];
+        }); 
         const shortAlbumData = await formatAlbumInfo(items).then(res => res.sort((a,b) => b.popularity - a.popularity))
-        console.log( list);
         return shortAlbumData;
       });
     res.json(albums);

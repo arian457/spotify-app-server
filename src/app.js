@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const cors = require("cors");
 const routes = require("./routes/index.js");
-const { DB_HOST } = process.env;
 
 require("./db.js");
 
@@ -19,7 +18,7 @@ server.use(cors());
 server.use(cookieParser());
 server.use(morgan("dev"));
 server.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", DB_HOST); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Origin", "*"); 
   res.header("Access-Control-Allow-Credentials", "true");
   res.header(
     "Access-Control-Allow-Headers",
@@ -31,9 +30,8 @@ server.use((req, res, next) => {
 
 server.use("/api/v1", routes);
 
-// Error catching endware.
+
 server.use((err, req, res, next) => {
-  // eslint-disable-line no-unused-vars
   const status = err.status || 500;
   const message = err.message || err;
   console.error(err);

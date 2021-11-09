@@ -2,7 +2,7 @@ const { Request } = require("../db");
 
 const getAllRequests = async (req, res) => {
   try {
-    const requests = await Request.findAll();
+    const requests = await Request.findAll({ include: { User } });
     res.json(requests);
   } catch (e) {
     console.log(e);
@@ -11,7 +11,7 @@ const getAllRequests = async (req, res) => {
 };
 const getRequestsById = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
+
   try {
     const request = await Request.findAll({ where: { UserId: id } });
     res.json(request);
