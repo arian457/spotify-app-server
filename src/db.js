@@ -2,15 +2,13 @@ require("dotenv").config();
 const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
-const { DB_USER, DB_PASSWORD, DB_HOST, DB_OWNER, DB_NAME } = process.env;
+const { DB_URI } = process.env;
 
-const sequelize = new Sequelize(
-  `${DB_OWNER}://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
-  {
-    logging: false,
-    native: false,
-  }
-);
+const sequelize = new Sequelize(DB_URI, {
+  timezone: "UTC",
+  logging: false,
+  native: false,
+});
 const basename = path.basename(__filename);
 
 const modelDefiners = [];
@@ -35,8 +33,8 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 const { Request, User } = sequelize.models;
 
-Request.belongsTo(User)
-User.hasMany(Request)
+Request.belongsTo(User);
+User.hasMany(Request);
 
 module.exports = {
   ...sequelize.models,
