@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const { User } = require("../db");
+const { generateToken } = require("../services/token");
 
 const registerController = async (req, res) => {
   const { userName, email, password } = req.body;
@@ -25,10 +26,10 @@ const registerController = async (req, res) => {
 };
 
 const loginController = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, userName } = req.body;
   try {
     const user = await User.findOne({
-      where: { email },
+      where: email ? { email } : { userName },
     });
 
     if (!user) {
@@ -41,8 +42,9 @@ const loginController = async (req, res) => {
       return res.status(403).json("Datos incorrectos, intente nuevamente");
     }
     return res.status(200).json({
-      message: "Exitoso",
+      token: generateToken(user),
       userInfo: {
+        id: user.id,
         userName: user.userName,
         email: user.email,
         favorites_artists: user.favorites_artist,
@@ -54,4 +56,15 @@ const loginController = async (req, res) => {
   }
 };
 
-module.exports = { registerController, loginController };
+const refreshSession = (req, res) => {
+  const { id, email, userName } = req.data;
+  res.json({
+    userInfo: {
+      id,
+      email,
+      userName,
+    },
+  });
+};
+
+module.exports = { registerController, loginController, refreshSession };
