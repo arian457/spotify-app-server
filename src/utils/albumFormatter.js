@@ -10,7 +10,7 @@ const formatAlbumInfo = async (items) => {
         return {
           id: d.id,
           name: d.name,
-          image: d.images[0].url,
+          image: d.images[0].url ? d.images[0].url : [{url:"https://blog.freemusicprojects.com/wp-content/uploads/2019/10/music-production-banner.jpg"}],
           external_urls: d.external_urls.spotify,
           total_tracks: d.total_tracks,
           popularity: popularity,
