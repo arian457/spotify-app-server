@@ -40,8 +40,6 @@ const _uniqueEmail = check("email").custom(async (email) => {
 
 // Grupos de validaciones
 const loginValidations = [
-  _validEmail,
-  _requiredEmail,
   _requiredPassword,
   checkValidations,
 ];
