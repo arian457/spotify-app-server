@@ -2,13 +2,19 @@ require("dotenv").config();
 const { Sequelize } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
-const { DB_URI } = process.env;
 
-const sequelize = new Sequelize(DB_URI, {
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
   timezone: "UTC",
   logging: false,
   native: false,
+  dialect: "postgres",
+  protocol: "postgres",
+  dialectOptions: {
+    ssl: true,
+    rejectUnauthorized: false
+  },
 });
+
 const basename = path.basename(__filename);
 
 const modelDefiners = [];
