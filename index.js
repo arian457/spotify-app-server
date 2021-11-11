@@ -3,8 +3,8 @@ const { conn } = require('./src/db.js');
 require("dotenv").config();
 
 conn.sync().then(() => {
-  console.log($PORT || process.env.PORT)
-  server.listen(process.env.PORT || $PORT, () => {
-    console.log('Everything Ready!');
+ 
+  server.listen(process.env.PORT || 5000 , () => {
+    console.log(`Everything on port ${process.env.PORT || 5000}!`);
   });
 });
