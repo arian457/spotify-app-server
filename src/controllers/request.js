@@ -1,8 +1,10 @@
-const { Request } = require("../db");
+const { Request, User } = require("../db");
+
 
 const getAllRequests = async (req, res) => {
   try {
-    const requests = await Request.findAll({ include: { User } });
+    const requests = await Request.findAll({ include: User, order: [['createdAt', 'DESC']] });
+
     res.json(requests);
   } catch (e) {
     console.log(e);
